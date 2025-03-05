@@ -243,6 +243,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aztec/bb.js@npm:^0.76.4":
+  version: 0.76.4
+  resolution: "@aztec/bb.js@npm:0.76.4"
+  dependencies:
+    comlink: "npm:^4.4.1"
+    commander: "npm:^12.1.0"
+    debug: "npm:^4.3.4"
+    fflate: "npm:^0.8.0"
+    pako: "npm:^2.1.0"
+    tslib: "npm:^2.4.0"
+  bin:
+    bb.js: dest/node/main.js
+  checksum: 10/38015a1a563cc171932bdf2b967df1a5050693215f00a4395aa6509666db3ead7d007f97c92345e54d1a5db323869acf325ad91e17c8cb24c20ee8c53eb5d084
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.16.0, @babel/code-frame@npm:^7.21.4, @babel/code-frame@npm:^7.23.5, @babel/code-frame@npm:^7.24.2, @babel/code-frame@npm:^7.8.3":
   version: 7.24.2
   resolution: "@babel/code-frame@npm:7.24.2"
@@ -6569,6 +6585,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noir-lang/acvm_js@npm:1.0.0-beta.3":
+  version: 1.0.0-beta.3
+  resolution: "@noir-lang/acvm_js@npm:1.0.0-beta.3"
+  checksum: 10/e314c00a6509cf6bb0395ebcdbe78b45d3136eb50e4e4756de201faa1e0f62f147f7d9d039e1db13446443b6973409ccf108e4fb4d45abdd2f4981d0c2aecf7d
+  languageName: node
+  linkType: hard
+
+"@noir-lang/noir_js@npm:1.0.0-beta.3":
+  version: 1.0.0-beta.3
+  resolution: "@noir-lang/noir_js@npm:1.0.0-beta.3"
+  dependencies:
+    "@noir-lang/acvm_js": "npm:1.0.0-beta.3"
+    "@noir-lang/noirc_abi": "npm:1.0.0-beta.3"
+    "@noir-lang/types": "npm:1.0.0-beta.3"
+  checksum: 10/4e756f69e5c8fcfe4f1243f026e37d68584852ad18887414ccc74de928ff2c019ea785ae06e48c523744676ccff2993b4d3ed8b971d6478e431af38574b4e924
+  languageName: node
+  linkType: hard
+
+"@noir-lang/noirc_abi@npm:1.0.0-beta.3":
+  version: 1.0.0-beta.3
+  resolution: "@noir-lang/noirc_abi@npm:1.0.0-beta.3"
+  dependencies:
+    "@noir-lang/types": "npm:1.0.0-beta.3"
+  checksum: 10/325b3a89197974960f62879715f6d3d545e80a091a0a4189b79adcb5318c6eb074c0cf6e653f33fcad8ac2db26ede68a438103aa369543d70b4ab667a0625ce5
+  languageName: node
+  linkType: hard
+
+"@noir-lang/types@npm:1.0.0-beta.3":
+  version: 1.0.0-beta.3
+  resolution: "@noir-lang/types@npm:1.0.0-beta.3"
+  checksum: 10/3425d082fe1496781dac590877b4c5d67c6e3d26fdeb0d039d2284494e4dea55193419260709027a3161369a90c28775d0eca5eee728b54c9ea9b3abf414f9b8
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/edr-darwin-arm64@npm:0.3.8":
   version: 0.3.8
   resolution: "@nomicfoundation/edr-darwin-arm64@npm:0.3.8"
@@ -7685,6 +7735,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@semaphore-protocol/proof@workspace:packages/proof"
   dependencies:
+    "@aztec/bb.js": "npm:^0.76.4"
+    "@noir-lang/noir_js": "npm:1.0.0-beta.3"
     "@rollup/plugin-alias": "npm:^5.1.0"
     "@rollup/plugin-json": "npm:^6.1.0"
     "@rollup/plugin-typescript": "npm:^11.1.6"
@@ -12260,6 +12312,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"comlink@npm:^4.4.1":
+  version: 4.4.2
+  resolution: "comlink@npm:4.4.2"
+  checksum: 10/ecee53b5b4536b3aa3f7636c383f831e68fbc013def77665cc7fad873d72cfa23b994e1ec4b49e83e4e909c1089a03acae03a523e33a5e5ed938cdb613456434
+  languageName: node
+  linkType: hard
+
 "comma-separated-tokens@npm:^1.0.0":
   version: 1.0.8
   resolution: "comma-separated-tokens@npm:1.0.8"
@@ -12326,7 +12385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^12.0.0":
+"commander@npm:^12.0.0, commander@npm:^12.1.0":
   version: 12.1.0
   resolution: "commander@npm:12.1.0"
   checksum: 10/cdaeb672d979816853a4eed7f1310a9319e8b976172485c2a6b437ed0db0a389a44cfb222bfbde772781efa9f215bdd1b936f80d6b249485b465c6cb906e1f93
@@ -15498,6 +15557,13 @@ __metadata:
     wasmcurves: "npm:0.2.2"
     web-worker: "npm:1.2.0"
   checksum: 10/2886a8737eb200dcb3f592a168d525bbde270e362589b5cb7dfa1cc86b78a3c455858664be994dae5c7acbf7eb831250afdf4270fc900d90b02ac6023a74c302
+  languageName: node
+  linkType: hard
+
+"fflate@npm:^0.8.0":
+  version: 0.8.2
+  resolution: "fflate@npm:0.8.2"
+  checksum: 10/2bd26ba6d235d428de793c6a0cd1aaa96a06269ebd4e21b46c8fd1bd136abc631acf27e188d47c3936db090bf3e1ede11d15ce9eae9bffdc4bfe1b9dc66ca9cb
   languageName: node
   linkType: hard
 
@@ -22784,6 +22850,13 @@ __metadata:
   bin:
     pacote: lib/bin.js
   checksum: 10/6aa223428e0c8273d48d2e49d7bf3fbe03ea3f6b418a56f7c6d52f3f628d71608a4b4a4cb04f3de0b67fface556df34e47ca1f840c771e24b5e4f57cdbc3f4d4
+  languageName: node
+  linkType: hard
+
+"pako@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "pako@npm:2.1.0"
+  checksum: 10/38a04991d0ec4f4b92794a68b8c92bf7340692c5d980255c92148da96eb3e550df7a86a7128b5ac0c65ecddfe5ef3bbe9c6dab13e1bc315086e759b18f7c1401
   languageName: node
   linkType: hard
 
