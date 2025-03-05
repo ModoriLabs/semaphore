@@ -1,11 +1,13 @@
 import type { Group, MerkleProof } from "@semaphore-protocol/group"
 import type { Identity } from "@semaphore-protocol/identity"
 import { MAX_DEPTH, MIN_DEPTH } from "@semaphore-protocol/utils/constants"
-import { Project, maybeGetSnarkArtifacts, type SnarkArtifacts } from "@zk-kit/artifacts"
 import { requireDefined, requireNumber, requireObject, requireTypes } from "@zk-kit/utils/error-handlers"
-import { packGroth16Proof } from "@zk-kit/utils/proof-packing"
 import type { BigNumberish } from "ethers"
-import { groth16, type NumericString } from "snarkjs"
+import { type NumericString } from "snarkjs"
+import { UltraHonkBackend } from "@aztec/bb.js"
+import { Noir } from "@noir-lang/noir_js"
+// Temporary import
+import circuit from "./semaphore.json"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
 import type { SemaphoreProof } from "./types"
@@ -36,8 +38,7 @@ export default async function generateProof(
     groupOrMerkleProof: Group | MerkleProof,
     message: BigNumberish | Uint8Array | string,
     scope: BigNumberish | Uint8Array | string,
-    merkleTreeDepth?: number,
-    snarkArtifacts?: SnarkArtifacts
+    merkleTreeDepth?: number
 ): Promise<SemaphoreProof> {
     requireDefined(identity, "identity")
     requireDefined(groupOrMerkleProof, "groupOrMerkleProof")
@@ -51,10 +52,6 @@ export default async function generateProof(
 
     if (merkleTreeDepth) {
         requireNumber(merkleTreeDepth, "merkleTreeDepth")
-    }
-
-    if (snarkArtifacts) {
-        requireObject(snarkArtifacts, "snarkArtifacts")
     }
 
     // Message and scope can be strings, numbers or buffers (i.e. Uint8Array).
@@ -83,13 +80,6 @@ export default async function generateProof(
         merkleTreeDepth = merkleProofLength !== 0 ? merkleProofLength : 1
     }
 
-    // If the Snark artifacts are not defined they will be automatically downloaded.
-    snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, {
-        parameters: [merkleTreeDepth],
-        version: "4.0.0"
-    })
-    const { wasm, zkey } = snarkArtifacts
-
     // The index must be converted to a list of indices, 1 for each tree level.
     // The missing siblings can be set to 0, as they won't be used in the circuit.
     const merkleProofIndices = []
@@ -103,25 +93,37 @@ export default async function generateProof(
         }
     }
 
-    const { proof, publicSignals } = await groth16.fullProve(
-        {
-            secret: identity.secretScalar,
-            merkleProofLength,
-            merkleProofIndices,
-            merkleProofSiblings,
-            scope: hash(scope),
-            message: hash(message)
+    const noir = new Noir(circuit as any)
+    const honk = new UltraHonkBackend(circuit.bytecode, {
+        threads: 1
+    })
+
+    const inputs = {
+        indexes: `${parseInt(merkleProofIndices.join(""), 2).toString(16)}`,
+        message: hash(message),
+        paths: {
+            len: merkleProof.siblings.length.toString(),
+            storage: merkleProof.siblings
+                .map((sibling) => sibling.toString())
+                .concat(Array<string>(32 - merkleProof.siblings.length).fill("0"))
         },
-        wasm,
-        zkey
-    )
+        scope: hash(scope),
+        secret: identity.secretScalar.toString()
+    }
+    const { witness } = await noir.execute(inputs)
+    // TODO : Use the proof from the backend
+    const { publicInputs } = await honk.generateProof(witness, {
+        keccak: true
+    })
 
     return {
         merkleTreeDepth,
         merkleTreeRoot: merkleProof.root.toString(),
-        nullifier: publicSignals[1],
+        nullifier: publicInputs[3],
         message: message.toString() as NumericString,
         scope: scope.toString() as NumericString,
-        points: packGroth16Proof(proof)
+        // TODO : Update points
+        // groth16 proof => ultrahonk proof
+        points: ["0", "0", "0", "0", "0", "0", "0", "0"]
     }
 }
