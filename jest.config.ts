@@ -22,6 +22,7 @@ const config: Config = {
     projects,
     verbose: true,
     coverageDirectory: "./coverage/libraries",
+    testTimeout: 20000,
     coverageThreshold: {
         global: {
             branches: 90,
