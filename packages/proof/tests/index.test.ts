@@ -5,7 +5,7 @@ import generateProof from "../src/generate-proof"
 import verifyProof from "../src/verify-proof"
 
 describe("Proof", () => {
-    const treeDepth = 10
+    const treeDepth = 32
 
     const message = "Hello world"
     const scope = "Scope"

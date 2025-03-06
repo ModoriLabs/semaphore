@@ -73,17 +73,30 @@ export default async function generateProof(
 
     const merkleProofLength = merkleProof.siblings.length
 
+    // TODO: fix
+    const DEFAULT_TREE_DEPTH = 32
+
     if (merkleTreeDepth !== undefined) {
         if (merkleTreeDepth < MIN_DEPTH || merkleTreeDepth > MAX_DEPTH) {
             throw new TypeError(`The tree depth must be a number between ${MIN_DEPTH} and ${MAX_DEPTH}`)
         }
     } else {
-        merkleTreeDepth = merkleProofLength !== 0 ? merkleProofLength : 1
+        merkleTreeDepth = merkleProofLength !== 0 ? merkleProofLength : DEFAULT_TREE_DEPTH
     }
+
+    // TODO: implement this
+    // If the Snark artifacts are not defined they will be automatically downloaded.
+    // snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, {
+    //     parameters: [merkleTreeDepth],
+    //     version: "4.0.0"
+    // })
+    // const { wasm, zkey } = snarkArtifacts
 
     // The index must be converted to a list of indices, 1 for each tree level.
     // The missing siblings can be set to 0, as they won't be used in the circuit.
     const merkleProofIndices = []
+
+    // TODO: change as immutable
     const merkleProofSiblings = merkleProof.siblings
 
     for (let i = 0; i < merkleTreeDepth; i += 1) {
@@ -104,16 +117,15 @@ export default async function generateProof(
         indexes: toHex(parseInt(merkleProofIndices.reverse().join(""), 2), 64),
         message: hash(message),
         paths: {
-            len: merkleProof.siblings.length.toString(),
+            len: merkleProofLength,
             storage: merkleProof.siblings
                 .map((sibling) => sibling.toString())
-                .concat(Array<string>(32 - merkleProof.siblings.length).fill("0"))
+                .concat(Array<string>(DEFAULT_TREE_DEPTH - merkleProof.siblings.length).fill("0"))
         },
         scope: hash(scope),
         secret: identity.secretScalar.toString()
     }
 
-    console.log(inputs)
     const { witness } = await noir.execute(inputs)
     const { publicInputs, proof } = await honk.generateProof(witness, {
         keccak: true
