@@ -1,5 +1,4 @@
 import type { NumericString } from "snarkjs"
-import type { PackedGroth16Proof } from "@zk-kit/utils"
 
 export type SemaphoreProof = {
     merkleTreeDepth: number
@@ -7,5 +6,6 @@ export type SemaphoreProof = {
     message: NumericString
     nullifier: NumericString
     scope: NumericString
-    points: PackedGroth16Proof
+    proof: Uint8Array
+    publicInputs: string[]
 }

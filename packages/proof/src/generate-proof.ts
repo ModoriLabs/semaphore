@@ -11,6 +11,7 @@ import circuit from "./semaphore.json"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
 import type { SemaphoreProof } from "./types"
+import { toHex } from "./toHex"
 
 /**
  * It generates a Semaphore proof, i.e. a zero-knowledge proof that an identity that
@@ -98,8 +99,9 @@ export default async function generateProof(
         threads: 1
     })
 
+    // FIXME : indexes?
     const inputs = {
-        indexes: `${parseInt(merkleProofIndices.join(""), 2).toString(16)}`,
+        indexes: toHex(parseInt(merkleProofIndices.reverse().join(""), 2), 64),
         message: hash(message),
         paths: {
             len: merkleProof.siblings.length.toString(),
@@ -110,9 +112,10 @@ export default async function generateProof(
         scope: hash(scope),
         secret: identity.secretScalar.toString()
     }
+
+    console.log(inputs)
     const { witness } = await noir.execute(inputs)
-    // TODO : Use the proof from the backend
-    const { publicInputs } = await honk.generateProof(witness, {
+    const { publicInputs, proof } = await honk.generateProof(witness, {
         keccak: true
     })
 
@@ -122,8 +125,7 @@ export default async function generateProof(
         nullifier: publicInputs[3],
         message: message.toString() as NumericString,
         scope: scope.toString() as NumericString,
-        // TODO : Update points
-        // groth16 proof => ultrahonk proof
-        points: ["0", "0", "0", "0", "0", "0", "0", "0"]
+        proof,
+        publicInputs
     }
 }
