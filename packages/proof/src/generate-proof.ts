@@ -6,8 +6,8 @@ import type { BigNumberish } from "ethers"
 import { type NumericString } from "snarkjs"
 import { UltraHonkBackend } from "@aztec/bb.js"
 import { Noir } from "@noir-lang/noir_js"
-// Temporary import
-import circuit from "./semaphore.json"
+import { maybeGetUltranHonkArtifacts, Project } from "@modori-labs/artifacts"
+import fs from "fs"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
 import type { SemaphoreProof } from "./types"
@@ -73,24 +73,17 @@ export default async function generateProof(
 
     const merkleProofLength = merkleProof.siblings.length
 
-    // TODO: fix
-    const DEFAULT_TREE_DEPTH = 32
-
     if (merkleTreeDepth !== undefined) {
         if (merkleTreeDepth < MIN_DEPTH || merkleTreeDepth > MAX_DEPTH) {
             throw new TypeError(`The tree depth must be a number between ${MIN_DEPTH} and ${MAX_DEPTH}`)
         }
     } else {
-        merkleTreeDepth = merkleProofLength !== 0 ? merkleProofLength : DEFAULT_TREE_DEPTH
+        merkleTreeDepth = merkleProofLength !== 0 ? merkleProofLength : 1
     }
 
-    // TODO: implement this
-    // If the Snark artifacts are not defined they will be automatically downloaded.
-    // snarkArtifacts ??= await maybeGetSnarkArtifacts(Project.SEMAPHORE, {
-    //     parameters: [merkleTreeDepth],
-    //     version: "4.0.0"
-    // })
-    // const { wasm, zkey } = snarkArtifacts
+    const { bytecode, abi } = await maybeGetUltranHonkArtifacts(Project.SEMAPHORE_NOIR, {
+        parameters: [merkleTreeDepth]
+    })
 
     // The index must be converted to a list of indices, 1 for each tree level.
     // The missing siblings can be set to 0, as they won't be used in the circuit.
@@ -107,8 +100,13 @@ export default async function generateProof(
         }
     }
 
-    const noir = new Noir(circuit as any)
-    const honk = new UltraHonkBackend(circuit.bytecode, {
+    const bytecodeBuffer = fs.readFileSync(bytecode)
+    const abiBuffer = fs.readFileSync(abi)
+    const noir = new Noir({
+        bytecode: bytecodeBuffer.toString(),
+        abi: JSON.parse(abiBuffer.toString())
+    })
+    const honk = new UltraHonkBackend(bytecodeBuffer.toString(), {
         threads: 1
     })
 
@@ -120,7 +118,7 @@ export default async function generateProof(
             len: merkleProofLength,
             storage: merkleProof.siblings
                 .map((sibling) => sibling.toString())
-                .concat(Array<string>(DEFAULT_TREE_DEPTH - merkleProof.siblings.length).fill("0"))
+                .concat(Array<string>(merkleTreeDepth - merkleProof.siblings.length).fill("0"))
         },
         scope: hash(scope),
         secret: identity.secretScalar.toString()

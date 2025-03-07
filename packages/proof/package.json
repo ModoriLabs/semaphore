@@ -52,11 +52,14 @@
     },
     "dependencies": {
         "@aztec/bb.js": "^0.76.4",
+        "@modori-labs/artifacts": "^0.0.4",
         "@noir-lang/noir_js": "1.0.0-beta.3",
         "@semaphore-protocol/utils": "4.9.1",
-        "@zk-kit/artifacts": "1.8.0",
         "@zk-kit/utils": "1.3.0",
         "ethers": "6.13.4",
         "snarkjs": "0.7.4"
+    },
+    "resolutions": {
+        "@zk-kit/artifacts": "npm:@modori-labs/artifacts@1.0.0"
     }
 }

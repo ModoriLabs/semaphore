@@ -2,10 +2,11 @@ import { MAX_DEPTH, MIN_DEPTH } from "@semaphore-protocol/utils/constants"
 import { requireArray, requireDefined, requireNumber, requireObject, requireString } from "@zk-kit/utils/error-handlers"
 import { UltraHonkBackend } from "@aztec/bb.js"
 import { requireUint8Array } from "@zk-kit/utils"
+import { maybeGetUltranHonkArtifacts, Project } from "@modori-labs/artifacts"
+import fs from "fs"
 import hash from "./hash"
 import { SemaphoreProof } from "./types"
 // Temporary import
-import circuit from "./semaphore.json"
 import { toHex } from "./toHex"
 
 /**
@@ -32,12 +33,14 @@ export default async function verifyProof(semaphoreProof: SemaphoreProof): Promi
         throw new TypeError(`The tree depth must be a number between ${MIN_DEPTH} and ${MAX_DEPTH}`)
     }
 
-    const honk = new UltraHonkBackend(circuit.bytecode, {
+    const { bytecode } = await maybeGetUltranHonkArtifacts(Project.SEMAPHORE_NOIR, {
+        parameters: [merkleTreeDepth]
+    })
+    const bytecodeBuffer = fs.readFileSync(bytecode)
+
+    const honk = new UltraHonkBackend(bytecodeBuffer.toString(), {
         threads: 1
     })
-
-    console.log(publicInputs)
-    console.log([toHex(hash(scope)), toHex(hash(message)), toHex(merkleTreeRoot), nullifier])
 
     return honk.verifyProof(
         {
