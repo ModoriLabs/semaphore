@@ -1,6 +1,6 @@
 {
     "name": "@modori-labs/proof",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A library to generate and verify Semaphore proofs.",
     "type": "module",
     "license": "MIT",
@@ -52,7 +52,7 @@
     },
     "dependencies": {
         "@aztec/bb.js": "^0.76.4",
-        "@modori-labs/artifacts": "^0.0.4",
+        "@modori-labs/artifacts": "^0.0.5",
         "@noir-lang/noir_js": "1.0.0-beta.3",
         "@semaphore-protocol/utils": "4.9.1",
         "@zk-kit/utils": "1.3.0",

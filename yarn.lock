@@ -6379,9 +6379,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@modori-labs/artifacts@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@modori-labs/artifacts@npm:0.0.4"
+"@modori-labs/artifacts@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@modori-labs/artifacts@npm:0.0.5"
   dependencies:
     "@commander-js/extra-typings": "npm:^12.1.0"
     "@inquirer/input": "npm:^2.1.8"
@@ -6391,9 +6391,33 @@ __metadata:
     snarkjs: "npm:^0.7.4"
   bin:
     snarkli: dist/cli/index.js
-  checksum: 10/dab2ce86096a536617a3645cb3a0e4995bda942b3e6db804d50696f9ba544cd1ace3754badecf1e1fe6034e352520ece4d5246b1678705e86ea1da104743636c
+  checksum: 10/b9db29394722071a10e4fe50a7f4c619749f8997493f482c860882101d10073cfb6eb12ea8c33f6eee43b2d748ac0c44f66c9f354b45da1c02d0c78d19d45850
   languageName: node
   linkType: hard
+
+"@modori-labs/proof@workspace:packages/proof":
+  version: 0.0.0-use.local
+  resolution: "@modori-labs/proof@workspace:packages/proof"
+  dependencies:
+    "@aztec/bb.js": "npm:^0.76.4"
+    "@modori-labs/artifacts": "npm:^0.0.5"
+    "@noir-lang/noir_js": "npm:1.0.0-beta.3"
+    "@rollup/plugin-alias": "npm:^5.1.0"
+    "@rollup/plugin-json": "npm:^6.1.0"
+    "@rollup/plugin-typescript": "npm:^11.1.6"
+    "@semaphore-protocol/utils": "npm:4.9.1"
+    "@types/snarkjs": "npm:^0"
+    "@zk-kit/utils": "npm:1.3.0"
+    ethers: "npm:6.13.4"
+    rimraf: "npm:^5.0.5"
+    rollup: "npm:^4.12.0"
+    rollup-plugin-cleanup: "npm:^3.2.1"
+    snarkjs: "npm:0.7.4"
+  peerDependencies:
+    "@semaphore-protocol/group": 4.9.1
+    "@semaphore-protocol/identity": 4.9.1
+  languageName: unknown
+  linkType: soft
 
 "@multiformats/dns@npm:^1.0.3":
   version: 1.0.6
@@ -7824,29 +7848,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@semaphore-protocol/proof@npm:4.9.1, @semaphore-protocol/proof@workspace:packages/proof":
-  version: 0.0.0-use.local
-  resolution: "@semaphore-protocol/proof@workspace:packages/proof"
+"@semaphore-protocol/proof@npm:4.9.1":
+  version: 4.9.1
+  resolution: "@semaphore-protocol/proof@npm:4.9.1"
   dependencies:
-    "@aztec/bb.js": "npm:^0.76.4"
-    "@modori-labs/artifacts": "npm:^0.0.4"
-    "@noir-lang/noir_js": "npm:1.0.0-beta.3"
-    "@rollup/plugin-alias": "npm:^5.1.0"
-    "@rollup/plugin-json": "npm:^6.1.0"
-    "@rollup/plugin-typescript": "npm:^11.1.6"
     "@semaphore-protocol/utils": "npm:4.9.1"
-    "@types/snarkjs": "npm:^0"
+    "@zk-kit/artifacts": "npm:1.8.0"
     "@zk-kit/utils": "npm:1.3.0"
     ethers: "npm:6.13.4"
-    rimraf: "npm:^5.0.5"
-    rollup: "npm:^4.12.0"
-    rollup-plugin-cleanup: "npm:^3.2.1"
     snarkjs: "npm:0.7.4"
   peerDependencies:
     "@semaphore-protocol/group": 4.9.1
     "@semaphore-protocol/identity": 4.9.1
-  languageName: unknown
-  linkType: soft
+  checksum: 10/2ad297895703b2047e337e2ccf9430239bb0c86780c445a2539359aa998adafb7ffdd9b03dd560c2eebd84f64431c8fa29c38f197aec44938d808dddffb348b7
+  languageName: node
+  linkType: hard
 
 "@semaphore-protocol/utils@npm:4.9.1, @semaphore-protocol/utils@workspace:packages/utils":
   version: 0.0.0-use.local
@@ -9882,6 +9898,13 @@ __metadata:
   dependencies:
     "@zag-js/dom-query": "npm:0.16.0"
   checksum: 10/20c4520fd2d912a4d4d5d1c508c5891f9b8d3278f6a2739563732ca751b24b5bf5f78e92e71532b43e618f8b399ae978b033492cbe0d3be7b9699e5bb7f98899
+  languageName: node
+  linkType: hard
+
+"@zk-kit/artifacts@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@zk-kit/artifacts@npm:1.8.0"
+  checksum: 10/f2eedd395d1662dc77780366edbbfbb9e543a82880dccfdc39dbf412010b65dabce9a64903218e64b9059fe7d9c02214e0f7817250a7ff4342836353d75d02dd
   languageName: node
   linkType: hard
 
@@ -28652,11 +28675,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A^5#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
   version: 5.4.5
-  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"
+  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=d69c25"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/760f7d92fb383dbf7dee2443bf902f4365db2117f96f875cf809167f6103d55064de973db9f78fe8f31ec08fff52b2c969aee0d310939c0a3798ec75d0bca2e1
+  checksum: 10/584be8bac7112ad49a9eb9992f71d542b1ff2fafb5bb315e1c196145e8feab589f1d7223cfb2d5df6770789582e6918f8287d1f2f89911b38eb80e29c560ad00
   languageName: node
   linkType: hard
 

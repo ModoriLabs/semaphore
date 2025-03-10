@@ -6,8 +6,7 @@ import type { BigNumberish } from "ethers"
 import { type NumericString } from "snarkjs"
 import { UltraHonkBackend } from "@aztec/bb.js"
 import { Noir } from "@noir-lang/noir_js"
-import { maybeGetUltranHonkArtifacts, Project } from "@modori-labs/artifacts"
-import fs from "fs"
+import { maybeGetUltraHonkArtifacts, Project } from "@modori-labs/artifacts"
 import hash from "./hash"
 import toBigInt from "./to-bigint"
 import type { SemaphoreProof } from "./types"
@@ -81,7 +80,7 @@ export default async function generateProof(
         merkleTreeDepth = merkleProofLength !== 0 ? merkleProofLength : 1
     }
 
-    const { bytecode, abi } = await maybeGetUltranHonkArtifacts(Project.SEMAPHORE_NOIR, {
+    const { bytecode, abi } = await maybeGetUltraHonkArtifacts(Project.SEMAPHORE_NOIR, {
         parameters: [merkleTreeDepth]
     })
 
@@ -100,13 +99,14 @@ export default async function generateProof(
         }
     }
 
-    const bytecodeBuffer = fs.readFileSync(bytecode)
-    const abiBuffer = fs.readFileSync(abi)
+    const byteCodeString = await fetch(bytecode).then((res) => res.text())
+    const abiJson = await fetch(abi).then((res) => res.json())
+
     const noir = new Noir({
-        bytecode: bytecodeBuffer.toString(),
-        abi: JSON.parse(abiBuffer.toString())
+        bytecode: byteCodeString,
+        abi: abiJson
     })
-    const honk = new UltraHonkBackend(bytecodeBuffer.toString(), {
+    const honk = new UltraHonkBackend(byteCodeString, {
         threads: 1
     })
 
