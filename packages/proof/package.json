@@ -1,6 +1,6 @@
 {
-    "name": "@semaphore-protocol/proof",
-    "version": "4.9.1",
+    "name": "@modori-labs/proof",
+    "version": "0.0.1",
     "description": "A library to generate and verify Semaphore proofs.",
     "type": "module",
     "license": "MIT",
